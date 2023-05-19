@@ -4,7 +4,13 @@ import br.ueg.prog.webi.api.mapper.BaseMapper;
 import br.ueg.prog.webi.api.model.IEntidade;
 import br.ueg.prog.webi.api.service.CrudService;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -26,15 +32,23 @@ public abstract class CrudController<
     protected SERVICE service;
 
     @GetMapping()
-    @Operation(description = "Listagem Geral")
-    public List<DTO> listAll(){
+    @Operation(description = "Listagem Geral", responses = {
+            @ApiResponse(responseCode = "200", description = "Listagem geral",
+                    content = @Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema())),
+            @ApiResponse(responseCode = "404", description = "Registro náo encontrado",
+                    content = @Content(mediaType = "application/json"))
+    })
+    public ResponseEntity<List<DTO>> listAll(){
         List<ENTIDADE> modelo = service.listarTodos();
-        return mapper.toDTO(modelo);
+        return ResponseEntity.ok(mapper.toDTO(modelo));
     }
 
     @PostMapping
-    @Operation(description = "Método utilizado para realizar a inclusão de um entidade")
-    public DTO incluir(@RequestBody DTO modeloDTO){
+    @Operation(description = "Método utilizado para realizar a inclusão de um entidade", responses = {
+            @ApiResponse(responseCode = "200", description = "Entidade Incluida", content = @Content(mediaType = "application/json"))})
+    public ResponseEntity<DTO> incluir(@RequestBody DTO modeloDTO){
         //prepração para entrada.
         ENTIDADE modeloIncluir = this.mapper.toModelo(modeloDTO);
         modeloIncluir.setId(null);
@@ -43,29 +57,37 @@ public abstract class CrudController<
         modeloIncluir = this.service.incluir(modeloIncluir);
 
         //preparação para o retorno
-        return this.mapper.toDTO(modeloIncluir);
+        return ResponseEntity.ok(this.mapper.toDTO(modeloIncluir));
     }
 
     @PutMapping(path = "/{id}")
-    @Operation(description = "Método utilizado para altlerar os dados de uma entidiade")
-    public DTO alterar(@RequestBody() DTO modeloDTO, @PathVariable(name = "id") PK_TYPE id
+    @Operation(description = "Método utilizado para altlerar os dados de uma entidiade", responses = {
+            @ApiResponse(responseCode = "200", description = "Entidade atualizada",
+                    content = @Content(mediaType = "application/json")),
+            @ApiResponse(responseCode = "404", description = "Registro náo encontrado",
+                    content = @Content(mediaType = "application/json"))
+    }
+    )
+    public ResponseEntity<DTO> alterar(@RequestBody() DTO modeloDTO, @PathVariable(name = "id") PK_TYPE id
     ){
         ENTIDADE pModelo = mapper.toModelo(modeloDTO);
         ENTIDADE alterar = service.alterar(pModelo, id);
-        return mapper.toDTO(alterar);
+        return ResponseEntity.ok(mapper.toDTO(alterar));
     }
     @DeleteMapping(path ="/{id}")
-    @Operation(description = "Método utilizado para remover uma entidiade pela id informado")
-    public DTO remover(@PathVariable(name = "id") PK_TYPE id){
+    @Operation(description = "Método utilizado para remover uma entidiade pela id informado", responses = {
+            @ApiResponse(responseCode = "200", description = "Entidade Removida", content = @Content(mediaType = "application/json"))})
+    public ResponseEntity<DTO> remover(@PathVariable(name = "id") PK_TYPE id){
         ENTIDADE modeloExcluido = this.service.excluir(id);
-        return mapper.toDTO(modeloExcluido);
+        return ResponseEntity.ok(mapper.toDTO(modeloExcluido));
     }
 
     @GetMapping(path = "/{id}")
-    @Operation(description = "Obter os dados completos de uma entidiade pelo id informado!")
-    public DTO ObterPorId(@PathVariable(name = "id") PK_TYPE id){
-        ENTIDADE entidade = this.service.obterPeloId(id);
-        return this.mapper.toDTO(entidade);
+    @Operation(description = "Obter os dados completos de uma entidiade pelo id informado!", responses = {
+            @ApiResponse(responseCode = "200", description = "Entidade encontrada", content = @Content(mediaType = "application/json"))})
+    public ResponseEntity<DTO> ObterPorId(@PathVariable(name = "id") PK_TYPE id){
+        ENTIDADE aluno = this.service.obterPeloId(id);
+        return ResponseEntity.ok(this.mapper.toDTO(aluno));
     }
 
 }

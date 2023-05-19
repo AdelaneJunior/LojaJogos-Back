@@ -13,8 +13,6 @@ import java.util.Date;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
-@Getter
-@Setter
 @Data
 @Entity
 @Table(name = Jogo.NOME_TABELA)
@@ -53,7 +51,6 @@ public class Jogo implements IEntidade<Long> {
     private BigDecimal valor;
 
     @Column(name = "joglanc")
-    @Temporal(TemporalType.DATE)
     private LocalDate dataLancamento;
 
 

@@ -1,5 +1,6 @@
 package br.ueg.prog.webi.barracajogos.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,7 +21,7 @@ public class JogoDTO {
 
     private BigDecimal valor;
 
-    @DateTimeFormat(pattern = "dd/MM/yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING)
     private LocalDate dataLancamento;
 
 }

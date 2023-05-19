@@ -23,7 +23,7 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 */
 /**
  * Classe de configuração referente a segurança da aplicação.
- * 
+ *
  * @author UEG
  *//*
 
@@ -32,19 +32,19 @@ public abstract class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	*/
 /**
-	 * Retorna a instância de {@link AuthenticationProvider} necessária na validação
-	 * do 'Token JWT'.
-	 * 
-	 * @return
-	 *//*
+ * Retorna a instância de {@link AuthenticationProvider} necessária na validação
+ * do 'Token JWT'.
+ *
+ * @return
+ *//*
 
 	@Bean
 	protected abstract AuthenticationProvider authenticationProvider();
 
 	*/
 /**
-	 * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
-	 *//*
+ * @see org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter#configure(org.springframework.security.config.annotation.web.builders.HttpSecurity)
+ *//*
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
@@ -58,11 +58,11 @@ public abstract class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	*/
 /**
-	 * Retorna a instância de {@link JwtAuthenticationFilter}.
-	 *
-	 * @return
-	 * @throws Exception
-	 *//*
+ * Retorna a instância de {@link JwtAuthenticationFilter}.
+ *
+ * @return
+ * @throws Exception
+ *//*
 
 	private JwtAuthenticationFilter jwtAuthenticationFilter() throws Exception {
 		return new JwtAuthenticationFilter(authenticationProvider());
@@ -70,10 +70,10 @@ public abstract class ApiSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	*/
 /**
-	 * Retorna a instância de {@link CredentialProvider}.
-	 * 
-	 * @return
-	 *//*
+ * Retorna a instância de {@link CredentialProvider}.
+ *
+ * @return
+ *//*
 
 	@Bean
 	protected CredentialProvider credentialProvider() {

@@ -21,7 +21,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurationSupp
 /**
  * Classe de configuração referente a geração de documentação automatida da API
  * REST.
- * 
+ *
  * @author UEG
  */
 public class ApiSwaggerConfig {
