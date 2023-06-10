@@ -1,6 +1,8 @@
 package br.ueg.prog.webi.barracajogos;
 
+import br.ueg.prog.webi.barracajogos.model.Avaliacao;
 import br.ueg.prog.webi.barracajogos.model.Jogo;
+import br.ueg.prog.webi.barracajogos.repository.AvaliacaoRepository;
 import br.ueg.prog.webi.barracajogos.repository.JogoRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -14,8 +16,19 @@ import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
 
-@SpringBootApplication
-@EntityScan(basePackageClasses = { Jsr310JpaConverters.class }, basePackages = "br.ueg.prog.webi.*")
+
+@SpringBootApplication(
+		scanBasePackages = {
+				"br.ueg.prog.webi.*",
+				//Para funcionamento da Arquitetura
+				"br.ueg.prog.webi.api.*", "br.ueg.prog.webi.*"}
+)
+@EntityScan(basePackageClasses = { Jsr310JpaConverters.class },
+		basePackages = {
+				"br.ueg.prog.webi.*",
+				//Para funcionamento da Arquitetura
+				"br.ueg.prog.webi.api.*"}
+)
 public class Application {
 
 	public static void main(String[] args) {
@@ -23,7 +36,7 @@ public class Application {
 	}
 
 	@Bean
-	public CommandLineRunner commandLineRunner(JogoRepository jogoRepository) {
+	public CommandLineRunner commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository) {
 		return args -> {
 			System.out.println("Executado");
 			System.out.println(jogoRepository);
@@ -57,6 +70,17 @@ public class Application {
 
 			System.out.println("Jogo2: "+ j1);
 			imprimirLista(jogoRepository);
+
+			Avaliacao avaliacao = new Avaliacao(
+					1L,
+					j1,
+					"Bem legal",
+					7,null
+			);
+
+			avaliacaoRepository.save(avaliacao);
+
+			System.out.println("Avaliacao: "+ avaliacao);
 
 		};
 	}

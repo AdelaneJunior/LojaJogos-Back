@@ -4,23 +4,23 @@ import br.ueg.prog.webi.api.model.IEntidade;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
 @Data
 @Entity
+@Getter
 @Table(name = Jogo.NOME_TABELA)
 public class Jogo implements IEntidade<Long> {
 
     public static final String NOME_TABELA = "jogo";
 
-    public static final String NOMEJOGO = "uk_nome_jogo";
+    public static final class Coluna {
+        public static final String ID = "jogseq";
+    }
 
     @SequenceGenerator(
             name = "a_gerador_sequence",
@@ -35,7 +35,7 @@ public class Jogo implements IEntidade<Long> {
     )
 
     @Id
-    @Column(name = "jogseq")
+    @Column(name = Coluna.ID)
     private Long codigo;
 
     @Column(name = "jognome", length = 200, nullable = false)
