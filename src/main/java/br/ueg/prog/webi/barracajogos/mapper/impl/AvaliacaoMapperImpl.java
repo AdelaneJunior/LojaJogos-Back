@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Mapper(componentModel = "spring")
 public class AvaliacaoMapperImpl implements AvaliacaoMapper {
@@ -29,7 +30,7 @@ public class AvaliacaoMapperImpl implements AvaliacaoMapper {
                 .descricao(avaliacaoDTO.getDescricao())
                 .nota(avaliacaoDTO.getNota())
                 .codigo(null)
-                .nomeJogo(jogo.getNomeJogo())
+                .mediaJogo(0)
                 .build();
 
     }
@@ -45,9 +46,10 @@ public class AvaliacaoMapperImpl implements AvaliacaoMapper {
                 .descricao(avaliacao.getDescricao())
                 .jogoSeq(jogo.getCodigo())
                 .nomeJogo(jogo.getNomeJogo())
-                .build();
+                .media(Objects.nonNull(avaliacao.getMediaJogo())?avaliacao.getMediaJogo() : 0)
+            .build();
 
-    }
+}
 
     @Override
     public List<AvaliacaoDTO> toDTO(List<Avaliacao> lista) {

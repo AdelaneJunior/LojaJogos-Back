@@ -21,5 +21,7 @@ public class AvaliacaoDTO {
     private int nota;
 
     private String nomeJogo;
+
+    private float media;
 }
 

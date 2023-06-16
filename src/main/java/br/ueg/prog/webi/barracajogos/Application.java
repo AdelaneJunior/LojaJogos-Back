@@ -75,7 +75,9 @@ public class Application {
 					1L,
 					j1,
 					"Bem legal",
-					7,null
+					7,
+					null,
+					0
 			);
 
 			avaliacaoRepository.save(avaliacao);

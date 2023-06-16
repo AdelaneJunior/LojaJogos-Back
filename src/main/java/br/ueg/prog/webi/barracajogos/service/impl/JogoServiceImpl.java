@@ -16,7 +16,7 @@ public class JogoServiceImpl
         implements JogoService {
 
     @Autowired
-    public JogoRepository repository;
+    private JogoRepository repository;
 
     @Override
     protected void prepararParaIncluir(Jogo entidade) {

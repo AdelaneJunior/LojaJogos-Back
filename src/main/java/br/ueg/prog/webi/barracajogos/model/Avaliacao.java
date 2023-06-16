@@ -51,6 +51,10 @@ public class Avaliacao implements IEntidade<Long> {
 
     @Transient
     private String nomeJogo;
+
+    @Transient
+    private float mediaJogo;
+
     @Override
     public String getTabelaNome() {
         return NOME_TABELA;
