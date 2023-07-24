@@ -36,12 +36,12 @@ public class Avaliacao implements IEntidade<Long> {
     private Long codigo;
 
     @ManyToOne(optional = false)
-    @JoinColumn(name = Jogo.Coluna.ID, nullable = false)
+    @JoinColumn(name = Jogo.COLUNA.ID, nullable = false)
     private Jogo jogo;
 
-//    @ManyToOne(optional = false)
-//    @JoinColumn(name = Usuario.Coluna.ID, nullable = false)
-//    private Usuario valor;
+    @ManyToOne(optional = false)
+    @JoinColumn(name = Usuario.Coluna.ID, nullable = false)
+    private Usuario usuario;
 
     @Column(name = "descricao", length = 200, nullable = false)
     private String descricao;

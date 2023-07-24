@@ -2,11 +2,11 @@ package br.ueg.prog.webi.barracajogos.mapper.impl;
 
 import br.ueg.prog.webi.barracajogos.dto.AvaliacaoDTO;
 import br.ueg.prog.webi.barracajogos.mapper.AvaliacaoMapper;
-import br.ueg.prog.webi.barracajogos.mapper.JogoMapper;
-import br.ueg.prog.webi.barracajogos.mapper.JogoMapperImpl;
 import br.ueg.prog.webi.barracajogos.model.Avaliacao;
 import br.ueg.prog.webi.barracajogos.model.Jogo;
+import br.ueg.prog.webi.barracajogos.model.Usuario;
 import br.ueg.prog.webi.barracajogos.service.impl.JogoServiceImpl;
+import br.ueg.prog.webi.barracajogos.service.impl.UsuarioServiceImpl;
 import org.mapstruct.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,15 +18,16 @@ import java.util.Objects;
 public class AvaliacaoMapperImpl implements AvaliacaoMapper {
 
     @Autowired
-    public JogoServiceImpl jogoService;
+    private JogoServiceImpl jogoService;
+
+    @Autowired
+    private UsuarioServiceImpl usuarioService;
 
     @Override
     public Avaliacao toModelo(AvaliacaoDTO avaliacaoDTO) {
-
-        Jogo jogo = getJogo(avaliacaoDTO);
-
         return Avaliacao.builder()
-                .jogo(jogo)
+                .jogo(this.jogoService.obterPeloId(avaliacaoDTO.getJogoSeq()))
+                .usuario(this.usuarioService.obterPeloId(avaliacaoDTO.getUsuaseq()))
                 .descricao(avaliacaoDTO.getDescricao())
                 .nota(avaliacaoDTO.getNota())
                 .codigo(null)
@@ -34,11 +35,11 @@ public class AvaliacaoMapperImpl implements AvaliacaoMapper {
                 .build();
 
     }
-
     @Override
     public AvaliacaoDTO toDTO(Avaliacao avaliacao) {
 
         Jogo jogo = avaliacao.getJogo();
+        Usuario usuario = avaliacao.getUsuario();
 
         return AvaliacaoDTO.builder()
                 .codigo(avaliacao.getCodigo())
@@ -47,6 +48,8 @@ public class AvaliacaoMapperImpl implements AvaliacaoMapper {
                 .jogoSeq(jogo.getCodigo())
                 .nomeJogo(jogo.getNomeJogo())
                 .media(Objects.nonNull(avaliacao.getMediaJogo())?avaliacao.getMediaJogo() : 0)
+                .usuaseq(usuario.getCodigo())
+                .nomeUsuario(usuario.getNome())
             .build();
 
 }
@@ -63,10 +66,4 @@ public class AvaliacaoMapperImpl implements AvaliacaoMapper {
         return listaDTO;
     }
 
-
-    private Jogo getJogo(AvaliacaoDTO avaliacaoDTO) {
-        JogoMapper jogoMapper = new JogoMapperImpl();
-        Jogo jogo = this.jogoService.obterPeloId(avaliacaoDTO.getJogoSeq());
-        return jogo;
-    }
 }

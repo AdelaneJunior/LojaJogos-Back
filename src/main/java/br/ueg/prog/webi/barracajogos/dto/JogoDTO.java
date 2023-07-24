@@ -1,17 +1,25 @@
 package br.ueg.prog.webi.barracajogos.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
-import org.springframework.format.annotation.DateTimeFormat;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.Date;
 
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class JogoDTO {
 
     private Long codigo;
+
+    private Long codigoImagem;
+
+    private String caminhoImagem;
 
     private String nomeJogo;
 

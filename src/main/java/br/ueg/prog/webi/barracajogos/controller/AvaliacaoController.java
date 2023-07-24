@@ -6,7 +6,7 @@ import br.ueg.prog.webi.barracajogos.dto.AvaliacaoDTO;
 import br.ueg.prog.webi.barracajogos.mapper.impl.AvaliacaoMapperImpl;
 import br.ueg.prog.webi.barracajogos.model.Avaliacao;
 import br.ueg.prog.webi.barracajogos.model.Jogo;
-import br.ueg.prog.webi.barracajogos.service.AvaliacaoService;
+import br.ueg.prog.webi.barracajogos.model.Usuario;
 import br.ueg.prog.webi.barracajogos.service.impl.AvaliacaoServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.ArraySchema;
@@ -31,7 +31,8 @@ public class AvaliacaoController extends CrudController
     @Autowired
     private AvaliacaoMapperImpl mapper;
 
-    public ResponseEntity<AvaliacaoDTO> ObterPorId(Long id) {
+    @Operation(operationId = "obterPorIdAvaliacao")
+    public ResponseEntity<AvaliacaoDTO> obterPorId(Long id) {
 
         Avaliacao avaliacao = this.service.obterPeloId(id);
 
@@ -39,12 +40,31 @@ public class AvaliacaoController extends CrudController
 
     }
 
+    @Operation(operationId = "incluirAvaliacao")
     public ResponseEntity<AvaliacaoDTO> incluir(@RequestBody AvaliacaoDTO avaliacaoDTO) {
         Avaliacao avaliacaoIncluir = this.mapper.toModelo(avaliacaoDTO);
         avaliacaoIncluir.setId(null);
         System.out.println(avaliacaoIncluir);
         avaliacaoIncluir = this.service.incluir(avaliacaoIncluir);
         return ResponseEntity.ok(this.mapper.toDTO(avaliacaoIncluir));
+    }
+
+    @Override
+    @Operation(operationId = "removerAvaliacao")
+    public ResponseEntity<AvaliacaoDTO> remover(Long id) {
+        return super.remover(id);
+    }
+
+    @Override
+    @Operation(operationId = "listAllAvaliacao")
+    public ResponseEntity<List<AvaliacaoDTO>> listAll() {
+        return super.listAll();
+    }
+
+    @Override
+    @Operation(operationId = "alterarAvaliacao")
+    public ResponseEntity<AvaliacaoDTO> alterar(AvaliacaoDTO modeloDTO, Long id) {
+        return super.alterar(modeloDTO, id);
     }
 
     @Operation(
@@ -174,12 +194,40 @@ public class AvaliacaoController extends CrudController
             float media = this.obterMediaJogo(jogo.getCodigo());
             listaAvaliacao.add(
                     Avaliacao.builder()
-                    .jogo(jogo)
-                    .nomeJogo(jogo.getNomeJogo())
-                    .mediaJogo(media)
-                    .build()
+                            .jogo(jogo)
+                            .nomeJogo(jogo.getNomeJogo())
+                            .mediaJogo(media)
+                            .usuario(new Usuario())
+                            .build()
             );
         }
+        return ResponseEntity.ok(this.mapper.toDTO(listaAvaliacao));
+    }
+
+    @Operation(
+            description = "Listagem das Avaliações por Usuario",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Listagem das Avaliações por Usuario",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            array = @ArraySchema
+                    )}
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Registro não encontrado",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = MessageResponse.class
+                            )
+                    )}
+            )})
+    @GetMapping(value = "/api/${app.api.version}/avaliacao/avaliacoesUser")
+    public ResponseEntity<List<AvaliacaoDTO>> obterListaAvaliacoesPorUsuario(Long userSeq) {
+
+        List<Avaliacao> listaAvaliacao = this.service.obterListaAvaliacoesPorUsuario(userSeq);
+
         return ResponseEntity.ok(this.mapper.toDTO(listaAvaliacao));
     }
 }

@@ -1,17 +1,14 @@
 package br.ueg.prog.webi.barracajogos.service.impl;
 
 import br.ueg.prog.webi.api.service.BaseCrudService;
-import br.ueg.prog.webi.barracajogos.dto.AvaliacaoDTO;
 import br.ueg.prog.webi.barracajogos.model.Avaliacao;
 import br.ueg.prog.webi.barracajogos.model.Jogo;
 import br.ueg.prog.webi.barracajogos.repository.AvaliacaoRepository;
 import br.ueg.prog.webi.barracajogos.service.AvaliacaoService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 
 @Service
@@ -50,5 +47,9 @@ public class AvaliacaoServiceImpl
 
     public List<Jogo> obterJogosAvaliados() {
         return this.repository.obterJogosAvaliados();
+    }
+
+    public List<Avaliacao> obterListaAvaliacoesPorUsuario(Long userSeq){
+        return this.repository.obterListaAvaliacoesPorUsuario(userSeq);
     }
 }

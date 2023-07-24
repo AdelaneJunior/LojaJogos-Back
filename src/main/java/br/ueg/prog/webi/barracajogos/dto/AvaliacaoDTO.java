@@ -1,6 +1,5 @@
 package br.ueg.prog.webi.barracajogos.dto;
 
-import br.ueg.prog.webi.barracajogos.model.Jogo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,5 +22,9 @@ public class AvaliacaoDTO {
     private String nomeJogo;
 
     private float media;
+
+    private String nomeUsuario;
+
+    private Long usuaseq;
 }
 

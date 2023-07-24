@@ -18,7 +18,7 @@ public class Jogo implements IEntidade<Long> {
 
     public static final String NOME_TABELA = "jogo";
 
-    public static final class Coluna {
+    public static final class COLUNA {
         public static final String ID = "jogseq";
     }
 
@@ -35,8 +35,12 @@ public class Jogo implements IEntidade<Long> {
     )
 
     @Id
-    @Column(name = Coluna.ID)
+    @Column(name = COLUNA.ID)
     private Long codigo;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name=Imagem.COLUNA.ID)
+    private Imagem imagem;
 
     @Column(name = "jognome", length = 200, nullable = false)
     private String nomeJogo;
