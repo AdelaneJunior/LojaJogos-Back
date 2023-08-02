@@ -39,7 +39,7 @@ public class ImagemServiceImpl extends BaseCrudService<Imagem, Long, ImagemRepos
 
     }
 
-    public Imagem incluir(MultipartFile imagemASalvar) throws IOException {
+    public Long incluir(MultipartFile imagemASalvar) throws IOException {
 
         String caminhoArquivo = CAMINHO_PASTA + "\\" + imagemASalvar.getOriginalFilename();
         String pathReference = PATH_REFERENCE + "/" + imagemASalvar.getOriginalFilename();
@@ -54,7 +54,7 @@ public class ImagemServiceImpl extends BaseCrudService<Imagem, Long, ImagemRepos
 
             imagemASalvar.transferTo(new File(caminhoArquivo));
 
-            return imagem;
+            return imagem.getId();
         } catch (DataIntegrityViolationException | ConstraintViolationException var3) {
             throw new BusinessException(ApiMessageCode.ERRO_BD, new Object[]{var3.getMessage()});
         }

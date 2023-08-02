@@ -17,7 +17,12 @@ public class UsuarioServiceImpl extends BaseCrudService<Usuario, Long, UsuarioRe
     UsuarioRepository repository;
 
     @Override
-    protected void prepararParaIncluir(Usuario entidade) {
+    protected void prepararParaIncluir(Usuario usuario) {
+
+        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
+        String senhaCodificada = bCryptPasswordEncoder.encode(usuario.getSenha());
+        usuario.setSenha(senhaCodificada);
+        usuario.setRole("ROLE_USER");
 
     }
 
@@ -31,21 +36,24 @@ public class UsuarioServiceImpl extends BaseCrudService<Usuario, Long, UsuarioRe
 
     }
 
-    public Usuario obterPeloLogin(String username) {
+    public Usuario obterPeloLogin(String login) {
 
-        return this.repository.obterPeloLogin(username);
+        return this.repository.obterPeloLogin(login);
 
     }
 
+    public Usuario obterPeloUsername(String username){
+        return this.repository.obterPeloUsername(username);
+    }
+
     public Usuario incluir(Usuario usuario) {
+        String senha = usuario.getSenha();
         this.validarCamposObrigatorios(usuario);
         this.validarDados(usuario);
         this.prepararParaIncluir(usuario);
-        BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
-        String senhaCodificada = bCryptPasswordEncoder.encode(usuario.getSenha());
-        usuario.setSenha(senhaCodificada);
-        return this.repository.save(usuario);
-
+        usuario = this.repository.save(usuario);
+        usuario.setSenha(senha);
+        return usuario;
     }
 
 }

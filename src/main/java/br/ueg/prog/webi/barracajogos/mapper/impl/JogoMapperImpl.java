@@ -19,7 +19,20 @@ public class JogoMapperImpl implements JogoMapper {
 
     @Override
     public Jogo toModelo(JogoDTO jogoDTO) {
-        return null;
+
+        Imagem imagem = imagemService.obterPeloId(jogoDTO.getCodigoImagem());
+
+        Jogo jogo = new Jogo();
+        jogo.setCodigo(jogoDTO.getCodigo());
+        jogo.setNomeJogo(jogoDTO.getNomeJogo());
+        jogo.setValor(jogoDTO.getValor());
+        jogo.setDesenvolvedora(jogoDTO.getDesenvolvedora());
+        jogo.setDataLancamento(jogoDTO.getDataLancamento());
+        jogo.setCategoria(jogoDTO.getCategoria());
+        jogo.setImagem(imagem);
+
+        return jogo;
+
     }
 
     @Override

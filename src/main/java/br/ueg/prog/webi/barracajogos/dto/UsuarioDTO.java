@@ -1,8 +1,9 @@
 package br.ueg.prog.webi.barracajogos.dto;
 
-import lombok.*;
-
-import java.util.List;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
@@ -22,5 +23,5 @@ public class UsuarioDTO{
 
     public boolean status;
 
-    public List<String> roles;
+    public String role;
 }

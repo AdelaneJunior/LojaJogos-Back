@@ -40,31 +40,42 @@ public class AvaliacaoController extends CrudController
 
     }
 
-    @Operation(operationId = "incluirAvaliacao")
+    @PostMapping
+    @Operation(
+            operationId = "incluirAvaliacao",
+            description = "Método utilizado para realizar a inclusão de um entidade",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Entidade Incluida",
+                    content = {@Content(
+                            mediaType = "application/json"
+                    )}
+            ), @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = MessageResponse.class
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "400",
+                    description = "Erro de Negócio",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = MessageResponse.class
+                            )
+                    )}
+            )}
+    )
     public ResponseEntity<AvaliacaoDTO> incluir(@RequestBody AvaliacaoDTO avaliacaoDTO) {
         Avaliacao avaliacaoIncluir = this.mapper.toModelo(avaliacaoDTO);
         avaliacaoIncluir.setId(null);
         System.out.println(avaliacaoIncluir);
         avaliacaoIncluir = this.service.incluir(avaliacaoIncluir);
         return ResponseEntity.ok(this.mapper.toDTO(avaliacaoIncluir));
-    }
-
-    @Override
-    @Operation(operationId = "removerAvaliacao")
-    public ResponseEntity<AvaliacaoDTO> remover(Long id) {
-        return super.remover(id);
-    }
-
-    @Override
-    @Operation(operationId = "listAllAvaliacao")
-    public ResponseEntity<List<AvaliacaoDTO>> listAll() {
-        return super.listAll();
-    }
-
-    @Override
-    @Operation(operationId = "alterarAvaliacao")
-    public ResponseEntity<AvaliacaoDTO> alterar(AvaliacaoDTO modeloDTO, Long id) {
-        return super.alterar(modeloDTO, id);
     }
 
     @Operation(

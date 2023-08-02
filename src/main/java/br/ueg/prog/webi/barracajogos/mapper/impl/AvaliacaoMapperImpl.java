@@ -27,7 +27,7 @@ public class AvaliacaoMapperImpl implements AvaliacaoMapper {
     public Avaliacao toModelo(AvaliacaoDTO avaliacaoDTO) {
         return Avaliacao.builder()
                 .jogo(this.jogoService.obterPeloId(avaliacaoDTO.getJogoSeq()))
-                .usuario(this.usuarioService.obterPeloId(avaliacaoDTO.getUsuaseq()))
+                .usuario(this.usuarioService.obterPeloUsername(avaliacaoDTO.getNomeUsuario()))
                 .descricao(avaliacaoDTO.getDescricao())
                 .nota(avaliacaoDTO.getNota())
                 .codigo(null)

@@ -111,7 +111,7 @@ public class Application {
 
 
             Usuario user = new Usuario();
-            user.setNome("Adelane");
+            user.setNome("Ademir");
             user.setSenha("admin");
             user.setLogin("admin");
             user.setStatus(true);
