@@ -18,7 +18,7 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     List<Avaliacao> obterListaAvaliacoesPorUsuario(@Param("userseq")Long userseq);
 
     @Query("SELECT avg(a.nota) FROM Avaliacao a WHERE a.jogo.codigo = :jogoseq")
-    Optional<Float> obterMediaDoJogo(@Param("jogoseq") Long jogoSeq);
+    Optional<Double> obterMediaDoJogo(@Param("jogoseq") Long jogoSeq);
 
     @Query("SELECT a FROM Avaliacao a WHERE a.jogo.codigo = :jogoseq")
     List<Avaliacao> obterListaAvaliacaoPorJogo(@Param("jogoseq") Long jogoSeq);

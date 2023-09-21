@@ -3,7 +3,7 @@ package br.ueg.prog.webi.barracajogos.controller;
 import br.ueg.prog.webi.api.controller.CrudController;
 import br.ueg.prog.webi.api.exception.MessageResponse;
 import br.ueg.prog.webi.barracajogos.dto.AvaliacaoDTO;
-import br.ueg.prog.webi.barracajogos.mapper.impl.AvaliacaoMapperImpl;
+import br.ueg.prog.webi.barracajogos.mapper.AvaliacaoMapperImpl;
 import br.ueg.prog.webi.barracajogos.model.Avaliacao;
 import br.ueg.prog.webi.barracajogos.model.Jogo;
 import br.ueg.prog.webi.barracajogos.model.Usuario;
@@ -28,8 +28,6 @@ public class AvaliacaoController extends CrudController
     @Autowired
     private AvaliacaoServiceImpl service;
 
-    @Autowired
-    private AvaliacaoMapperImpl mapper;
 
     @Operation(operationId = "obterPorIdAvaliacao")
     public ResponseEntity<AvaliacaoDTO> obterPorId(Long id) {
@@ -97,7 +95,7 @@ public class AvaliacaoController extends CrudController
                     )}
             )})
     @GetMapping(value = "/api/${app.api.version}/avaliacao/mediajogo")
-    public Float obterMediaJogo(@RequestParam Long jogoSeq) {
+    public Double obterMediaJogo(@RequestParam Long jogoSeq) {
 
         return this.service.obterMediaJogo(jogoSeq);
     }
@@ -202,11 +200,10 @@ public class AvaliacaoController extends CrudController
         ResponseEntity<List<Jogo>> listaJogos = this.obterJogosAvaliados();
         List<Avaliacao> listaAvaliacao = new ArrayList<>();
         for (Jogo jogo : listaJogos.getBody()) {
-            float media = this.obterMediaJogo(jogo.getCodigo());
+            Double media = this.obterMediaJogo(jogo.getCodigo());
             listaAvaliacao.add(
                     Avaliacao.builder()
                             .jogo(jogo)
-                            .nomeJogo(jogo.getNomeJogo())
                             .mediaJogo(media)
                             .usuario(new Usuario())
                             .build()

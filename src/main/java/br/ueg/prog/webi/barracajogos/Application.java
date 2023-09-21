@@ -64,7 +64,7 @@ public class Application {
             }
 
             Jogo j1 = new Jogo();
-            j1.setNomeJogo("Elden Ring");
+            j1.setNome("Elden Ring");
             j1.setDesenvolvedora("FromSoftware");
             j1.setCategoria("SoulsLike, OpenWorld");
             j1.setValor(new BigDecimal("250.00"));
@@ -95,7 +95,7 @@ public class Application {
 
 
             j1 = new Jogo();
-            j1.setNomeJogo("Hollow Knight");
+            j1.setNome("Hollow Knight");
             j1.setDesenvolvedora("Team Cherry");
             j1.setCategoria("SoulsLike, Metroidvania");
             j1.setValor(new BigDecimal("46.99"));
@@ -104,7 +104,7 @@ public class Application {
             j1.setImagem(i1);
 
 
-            jogoRepository.save(j1);
+            j1 = jogoRepository.save(j1);
 
             System.out.println("Jogo2: " + j1);
             imprimirLista(jogoRepository);
@@ -119,21 +119,15 @@ public class Application {
             user.setEmail("admin@gmail.com");
             user.setCodigo(null);
 
-            usuarioRepository.save(user);
+           user = usuarioRepository.save(user);
 
             System.out.println(user);
 
             Avaliacao avaliacao = new Avaliacao(
-                    1L,
-                    j1,
-                    user,
-                    "Bem legal",
-                    5,
-                    null,
-                    0
+                    1L, j1, user, "bom", 5L, 2.1D
             );
 
-            avaliacaoRepository.save(avaliacao);
+           avaliacao = avaliacaoRepository.save(avaliacao);
 
             System.out.println("Avaliacao: " + avaliacao);
         };

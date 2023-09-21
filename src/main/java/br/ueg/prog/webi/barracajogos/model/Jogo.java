@@ -1,6 +1,6 @@
 package br.ueg.prog.webi.barracajogos.model;
 
-import br.ueg.prog.webi.api.model.IEntidade;
+import br.ueg.prog.webi.api.model.BaseEntidade;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -14,12 +14,18 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Entity
 @Getter
 @Table(name = Jogo.NOME_TABELA)
-public class Jogo implements IEntidade<Long> {
+public class Jogo extends BaseEntidade<Long> {
 
     public static final String NOME_TABELA = "jogo";
 
     public static final class COLUNA {
         public static final String ID = "jogseq";
+        public static final String IMAGEM = "jogimagem";
+        public static final String NOME = "jognome";
+        public static final String DESENVOLVEDORA = "jogdesenvolvedora";
+        public static final String CATEGORIA = "jogcategoria";
+        public static final String VALOR = "jogvalor";
+        public static final String LANCAMENTO = "joglancamento";
     }
 
     @SequenceGenerator(
@@ -38,23 +44,27 @@ public class Jogo implements IEntidade<Long> {
     @Column(name = COLUNA.ID)
     private Long codigo;
 
+
     @ManyToOne(optional = false)
-    @JoinColumn(name=Imagem.COLUNA.ID)
+    @JoinColumn(name = COLUNA.IMAGEM, nullable = false,
+            referencedColumnName = Imagem.COLUNA.ID,
+            foreignKey = @ForeignKey(name = "fk_jogo_imagem"))
     private Imagem imagem;
 
-    @Column(name = "jognome", length = 200, nullable = false)
-    private String nomeJogo;
+    @Column(name = COLUNA.NOME, length = 200, nullable = false)
+    private String nome;
 
-    @Column(name = "jogdsvd", length = 200, nullable = false)
+    @Column(name = COLUNA.DESENVOLVEDORA, length = 200, nullable = false)
     private String desenvolvedora;
 
-    @Column(name = "jogcatg", length = 200, nullable = false)
+    @Column(name = COLUNA.CATEGORIA, length = 200, nullable = false)
     private String categoria;
 
-    @Column(name = "jogvalr", nullable = false)
+    @Column(name = COLUNA.VALOR, nullable = false)
     private BigDecimal valor;
 
-    @Column(name = "joglanc")
+    @Temporal(TemporalType.DATE)
+    @Column(name = COLUNA.LANCAMENTO)
     private LocalDate dataLancamento;
 
 

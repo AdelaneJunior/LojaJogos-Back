@@ -1,6 +1,6 @@
 package br.ueg.prog.webi.barracajogos.model;
 
-import br.ueg.prog.webi.api.model.IEntidade;
+import br.ueg.prog.webi.api.model.BaseEntidade;
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -11,7 +11,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @Entity
 @Getter
 @Table(name = Usuario.NOME_TABELA)
-public class Usuario  implements IEntidade<Long> {
+public class Usuario extends BaseEntidade<Long> {
 
     public static final String NOME_TABELA = "usuario";
 

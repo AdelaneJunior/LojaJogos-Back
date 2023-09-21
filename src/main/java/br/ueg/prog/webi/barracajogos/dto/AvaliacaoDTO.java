@@ -17,11 +17,11 @@ public class AvaliacaoDTO {
 
     private String descricao;
 
-    private int nota;
+    private Long nota;
 
     private String nomeJogo;
 
-    private float media;
+    private Double media;
 
     private String nomeUsuario;
 

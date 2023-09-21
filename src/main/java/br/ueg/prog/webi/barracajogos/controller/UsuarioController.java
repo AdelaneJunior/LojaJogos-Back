@@ -3,7 +3,7 @@ package br.ueg.prog.webi.barracajogos.controller;
 import br.ueg.prog.webi.api.controller.CrudController;
 import br.ueg.prog.webi.api.exception.MessageResponse;
 import br.ueg.prog.webi.barracajogos.dto.UsuarioDTO;
-import br.ueg.prog.webi.barracajogos.mapper.impl.UsuarioMapperImpl;
+import br.ueg.prog.webi.barracajogos.mapper.UsuarioMapperImpl;
 import br.ueg.prog.webi.barracajogos.model.Usuario;
 import br.ueg.prog.webi.barracajogos.service.impl.UsuarioServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;

@@ -2,7 +2,7 @@ package br.ueg.prog.webi.barracajogos.controller;
 
 import br.ueg.prog.webi.api.controller.CrudController;
 import br.ueg.prog.webi.barracajogos.dto.JogoDTO;
-import br.ueg.prog.webi.barracajogos.mapper.impl.JogoMapperImpl;
+import br.ueg.prog.webi.barracajogos.mapper.JogoMapperImpl;
 import br.ueg.prog.webi.barracajogos.model.Jogo;
 import br.ueg.prog.webi.barracajogos.service.JogoService;
 import org.springframework.security.access.prepost.PreAuthorize;

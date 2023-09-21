@@ -45,15 +45,5 @@ public enum Status {
         return Arrays.stream(values()).filter(value -> value.getId().equals(id)).findFirst().orElse(null);
     }
 
-    /**
-     * Retorna a instância de {@link Status} conforme o 'id' informado.
-     *
-     * @param id -
-     * @return -
-     */
-    public static Status getById(final boolean id) {
-        return id ? Status.ATIVO : Status.INATIVO;
-    }
-
 }
 

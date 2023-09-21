@@ -1,6 +1,6 @@
 package br.ueg.prog.webi.barracajogos.model;
 
-import br.ueg.prog.webi.api.model.IEntidade;
+import br.ueg.prog.webi.api.model.BaseEntidade;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,7 +15,7 @@ import static jakarta.persistence.GenerationType.SEQUENCE;
 @AllArgsConstructor
 @Builder
 @Table(name = Imagem.NOME_TABELA)
-public class Imagem implements IEntidade<Long> {
+public class Imagem extends BaseEntidade<Long> {
 
     public static final String NOME_TABELA = "imagem";
 
@@ -34,7 +34,7 @@ public class Imagem implements IEntidade<Long> {
     )
 
     @Id
-    @Column(name = "imgseq")
+    @Column(name = COLUNA.ID)
     private Long codigo;
 
     private String nome;

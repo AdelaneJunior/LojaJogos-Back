@@ -1,6 +1,8 @@
 package br.ueg.prog.webi.barracajogos.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +32,7 @@ public class JogoDTO {
     private BigDecimal valor;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING)
+    @Temporal(TemporalType.DATE)
     private LocalDate dataLancamento;
 
 }

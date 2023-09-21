@@ -33,7 +33,7 @@ public class AvaliacaoServiceImpl
 
     }
 
-    public float obterMediaJogo(Long jogoSeq) {
+    public Double obterMediaJogo(Long jogoSeq) {
         return this.repository.obterMediaDoJogo(jogoSeq).get();
     }
 
