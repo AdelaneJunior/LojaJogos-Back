@@ -17,6 +17,7 @@ public class Usuario extends BaseEntidade<Long> {
 
     public static final class Coluna {
         public static final String ID = "userid";
+        public static final String CARRINHO = "user_carrinho";
     }
 
     @SequenceGenerator(
@@ -52,6 +53,12 @@ public class Usuario extends BaseEntidade<Long> {
 
     @Column(name = "userrole", length = 200, nullable = true)
     private String role;
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = Coluna.CARRINHO, nullable = false,
+            referencedColumnName = Carrinho.Coluna.ID,
+    foreignKey = @ForeignKey(name = "fk_usuario_carrinho"))
+    private Carrinho carrinho;
 
     @Override
     public String getTabelaNome() {

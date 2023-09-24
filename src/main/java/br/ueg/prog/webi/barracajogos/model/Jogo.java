@@ -3,10 +3,13 @@ package br.ueg.prog.webi.barracajogos.model;
 import br.ueg.prog.webi.api.model.BaseEntidade;
 import jakarta.persistence.*;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.Set;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
 
@@ -66,6 +69,11 @@ public class Jogo extends BaseEntidade<Long> {
     @Temporal(TemporalType.DATE)
     @Column(name = COLUNA.LANCAMENTO)
     private LocalDate dataLancamento;
+
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
+    @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY)
+    private Set<JogoCarrinho> jogoCarrinhos;
 
 
     @Override

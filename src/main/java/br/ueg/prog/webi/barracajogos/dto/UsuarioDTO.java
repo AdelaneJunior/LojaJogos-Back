@@ -24,4 +24,6 @@ public class UsuarioDTO{
     public boolean status;
 
     public String role;
+
+    public Long carrinhoCodigo;
 }

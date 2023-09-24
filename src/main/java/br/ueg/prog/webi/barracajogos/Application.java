@@ -1,14 +1,12 @@
 package br.ueg.prog.webi.barracajogos;
 
 import br.ueg.prog.webi.api.controller.CrudController;
-import br.ueg.prog.webi.barracajogos.model.Avaliacao;
-import br.ueg.prog.webi.barracajogos.model.Imagem;
-import br.ueg.prog.webi.barracajogos.model.Jogo;
-import br.ueg.prog.webi.barracajogos.model.Usuario;
+import br.ueg.prog.webi.barracajogos.model.*;
 import br.ueg.prog.webi.barracajogos.repository.AvaliacaoRepository;
 import br.ueg.prog.webi.barracajogos.repository.ImagemRepository;
 import br.ueg.prog.webi.barracajogos.repository.JogoRepository;
 import br.ueg.prog.webi.barracajogos.repository.UsuarioRepository;
+import br.ueg.prog.webi.barracajogos.service.impl.CarrinhoServiceImpl;
 import io.swagger.v3.oas.models.Operation;
 import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.boot.CommandLineRunner;
@@ -46,7 +44,7 @@ public class Application {
 
     @Bean
     public CommandLineRunner
-    commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository, UsuarioRepository usuarioRepository, ImagemRepository imagemRepository) {
+    commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository, UsuarioRepository usuarioRepository, ImagemRepository imagemRepository, CarrinhoServiceImpl carrinhoService) {
         return args -> {
             System.out.println("Executado");
             System.out.println(jogoRepository);
@@ -73,7 +71,7 @@ public class Application {
             j1.setImagem(i1);
 
             try {
-                jogoRepository.save(j1);
+                j1 = jogoRepository.save(j1);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -118,6 +116,8 @@ public class Application {
             user.setRole("ROLE_ADMIN");
             user.setEmail("admin@gmail.com");
             user.setCodigo(null);
+            user.setCarrinho(new Carrinho());
+            user.getCarrinho().setPrecoFinal(0D);
 
            user = usuarioRepository.save(user);
 
@@ -130,6 +130,21 @@ public class Application {
            avaliacao = avaliacaoRepository.save(avaliacao);
 
             System.out.println("Avaliacao: " + avaliacao);
+
+            Carrinho carrinho = carrinhoService.obterPeloId(1L);
+
+            JogoCarrinho jogoCarrinho = new JogoCarrinho();
+            jogoCarrinho.setJogo(new Jogo());
+            jogoCarrinho.getJogo().setCodigo(1L);
+            jogoCarrinho.setDesconto(0D);
+            jogoCarrinho.setQuantidade(1L);
+
+
+            carrinho.getJogos().add(jogoCarrinho);
+
+           carrinho = carrinhoService.incluir(carrinho);
+
+            System.out.println(carrinho);
         };
     }
 
