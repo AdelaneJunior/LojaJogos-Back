@@ -150,6 +150,16 @@ public class Application {
 
             System.out.println(jogoCarrinho);
 
+            jogoCarrinho = new JogoCarrinho();
+            jogoCarrinho.setJogo(jogoRepository.findById(1L).get());
+            jogoCarrinho.setDesconto(BigDecimal.valueOf(50));
+            jogoCarrinho.setQuantidade(1L);
+            jogoCarrinho.setCarrinho(carrinho);
+
+            jogoCarrinho = jogoCarrinhoService.incluir(jogoCarrinho);
+
+            System.out.println(jogoCarrinho);
+
 //            carrinho.getJogos().add(jogoCarrinho);
 //
 //            carrinho = carrinhoService.incluir(carrinho);
