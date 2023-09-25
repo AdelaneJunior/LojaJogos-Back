@@ -14,10 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 public class CarrinhoController extends CrudController
         <Carrinho, CarrinhoDTO, Long, CarrinhoMapperImpl, CarrinhoServiceImpl> {
 
-    @Override
-    public ResponseEntity<CarrinhoDTO> incluir(CarrinhoDTO modeloDTO) {
-        int a = 0;
-        return super.incluir(modeloDTO);
-    }
 
+    @Override
+    public ResponseEntity<CarrinhoDTO> ObterPorId(Long id) {
+        return super.ObterPorId(id);
+    }
 }

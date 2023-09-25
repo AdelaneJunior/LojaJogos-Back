@@ -64,6 +64,8 @@ public class CarrinhoServiceImpl
             retorno.setJogos(new HashSet<>());
         }
 
+        retorno.setPrecoFinal(tratarPrecoFinal(retorno));
+
         return retorno;
     }
 

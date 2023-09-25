@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Data
@@ -15,7 +16,7 @@ public class CarrinhoDTO {
 
     private Long codigo;
 
-    private Double precoFinal;
+    private BigDecimal precoFinal;
 
     private List<JogoCarrinhoDTO> jogos;
 }

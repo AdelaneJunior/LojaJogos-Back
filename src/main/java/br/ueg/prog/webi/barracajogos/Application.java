@@ -1,6 +1,8 @@
 package br.ueg.prog.webi.barracajogos;
 
 import br.ueg.prog.webi.api.controller.CrudController;
+import br.ueg.prog.webi.barracajogos.controller.CarrinhoController;
+import br.ueg.prog.webi.barracajogos.dto.CarrinhoDTO;
 import br.ueg.prog.webi.barracajogos.model.*;
 import br.ueg.prog.webi.barracajogos.repository.AvaliacaoRepository;
 import br.ueg.prog.webi.barracajogos.repository.ImagemRepository;
@@ -45,7 +47,10 @@ public class Application {
 
     @Bean
     public CommandLineRunner
-    commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository, UsuarioRepository usuarioRepository, ImagemRepository imagemRepository, CarrinhoServiceImpl carrinhoService, JogoCarrinhoService jogoCarrinhoService) {
+    commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository,
+                      UsuarioRepository usuarioRepository, ImagemRepository imagemRepository,
+                      CarrinhoServiceImpl carrinhoService, JogoCarrinhoService jogoCarrinhoService,
+                      CarrinhoController carrinhoController) {
         return args -> {
             System.out.println("Executado");
             System.out.println(jogoRepository);
@@ -139,16 +144,18 @@ public class Application {
             jogoCarrinho.setJogo(j1);
             jogoCarrinho.setDesconto(BigDecimal.valueOf(10));
             jogoCarrinho.setQuantidade(1L);
-//            jogoCarrinho.setCarrinho(carrinho);
+            jogoCarrinho.setCarrinho(carrinho);
+
+            jogoCarrinho = jogoCarrinhoService.incluir(jogoCarrinho);
+
+            System.out.println(jogoCarrinho);
+
+//            carrinho.getJogos().add(jogoCarrinho);
 //
-//            jogoCarrinho = jogoCarrinhoService.incluir(jogoCarrinho);
-//
-//            System.out.println(jogoCarrinho);
+//            carrinho = carrinhoService.incluir(carrinho);
 
-            carrinho.getJogos().add(jogoCarrinho);
-
-            carrinho = carrinhoService.incluir(carrinho);
-
+            CarrinhoDTO carrinhoDTO = carrinhoController.ObterPorId(user.getCarrinho().getCodigo()).getBody();
+            System.out.println(carrinhoDTO);
         };
     }
 

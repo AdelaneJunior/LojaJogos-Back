@@ -7,6 +7,7 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -52,4 +53,7 @@ public class Carrinho extends BaseEntidade<Long> {
             orphanRemoval = true,
             cascade = CascadeType.ALL)
     private Set<JogoCarrinho> jogos = new HashSet<>();
+
+    @Transient
+    private BigDecimal precoFinal;
 }
