@@ -8,13 +8,12 @@ import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 
-import static br.ueg.prog.webi.barracajogos.model.JogoCarrinho.NOME_TABELA;
-import static jakarta.persistence.GenerationType.SEQUENCE;
+import java.math.BigDecimal;
 
 @Data
 @Entity
 @Getter
-@Table(name = NOME_TABELA)
+@Table(name = JogoCarrinho.NOME_TABELA)
 @IdClass(PkJogoCarrinho.class)
 public class JogoCarrinho extends BaseEntidade<PkJogoCarrinho> {
 
@@ -28,20 +27,8 @@ public class JogoCarrinho extends BaseEntidade<PkJogoCarrinho> {
         public static final String DESCONTO ="jocar_desconto";
     }
 
-    @SequenceGenerator(
-            name = "item_gerador_sequence",
-            sequenceName = "jogocarrinho_sequence",
-            allocationSize = 1
-    )
-
-    @GeneratedValue(
-            strategy = SEQUENCE,
-            generator = "item_gerador_sequence"
-
-    )
 
     @Id
-    @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Coluna.JOGO, nullable = false,
@@ -62,5 +49,5 @@ public class JogoCarrinho extends BaseEntidade<PkJogoCarrinho> {
     private Long quantidade;
 
     @Column(name = Coluna.DESCONTO, nullable = false)
-    private Double desconto;
+    private BigDecimal desconto;
 }

@@ -48,11 +48,8 @@ public class Carrinho extends BaseEntidade<Long> {
     @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "carrinho",
-            fetch = FetchType.EAGER,
+            fetch = FetchType.LAZY,
             orphanRemoval = true,
             cascade = CascadeType.ALL)
     private Set<JogoCarrinho> jogos = new HashSet<>();
-
-    @Column(name = Coluna.PRECO_FINAL, nullable = false)
-    private Double precoFinal ;
 }

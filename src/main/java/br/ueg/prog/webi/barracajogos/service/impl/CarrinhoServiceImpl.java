@@ -7,9 +7,9 @@ import br.ueg.prog.webi.barracajogos.repository.CarrinhoRepository;
 import br.ueg.prog.webi.barracajogos.service.CarrinhoService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
-import java.util.Set;
 
 @Service
 public class CarrinhoServiceImpl
@@ -17,7 +17,7 @@ public class CarrinhoServiceImpl
     implements CarrinhoService {
     @Override
     protected void prepararParaIncluir(Carrinho entidade) {
-
+        tratarJogoCarrinho(entidade);
     }
 
     @Override
@@ -27,24 +27,44 @@ public class CarrinhoServiceImpl
 
     private void tratarJogoCarrinho(Carrinho carrinho){
 
-        Set<JogoCarrinho> listaJogoCarrinho = new HashSet<>();
-
         if (Objects.nonNull(carrinho.getJogos())) {
             carrinho.getJogos().forEach(jogoCarrinho -> {
 
                 if (Objects.isNull(jogoCarrinho.getCarrinho())) {
-                    jogoCarrinho.setCarrinho(carrinho);
-                    listaJogoCarrinho.add(jogoCarrinho);
+                    jogoCarrinho.setCarrinho(new Carrinho());
+                    jogoCarrinho.getCarrinho().setCodigo(carrinho.getCodigo());
                 }
-
             });
         }
-        carrinho.setJogos(listaJogoCarrinho);
+    }
+
+    private BigDecimal tratarPrecoFinal(Carrinho carrinho) {
+
+        BigDecimal precoFinal = BigDecimal.ZERO;
+
+        for (JogoCarrinho jogoCarrinho : carrinho.getJogos()) {
+            BigDecimal quantidade = BigDecimal.valueOf(jogoCarrinho.getQuantidade());
+            BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
+            BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100)));
+            BigDecimal valorComDesconto = valorJogo.subtract(desconto);
+
+            BigDecimal jogoCarrinhoValor = valorComDesconto.multiply(quantidade);
+            precoFinal = precoFinal.add(jogoCarrinhoValor);
+        }
+
+        return precoFinal;
     }
 
     @Override
     public Carrinho obterPeloId(Long id) {
-        return (Carrinho) this.repository.findById(id).get();
+
+        Carrinho retorno = (Carrinho) this.repository.findById(id).get();
+
+        if(Objects.isNull(retorno.getJogos())) {
+            retorno.setJogos(new HashSet<>());
+        }
+
+        return retorno;
     }
 
     @Override
@@ -52,10 +72,4 @@ public class CarrinhoServiceImpl
 
     }
 
-    @Override
-    public Carrinho incluir(Carrinho carrinho) {
-
-        tratarJogoCarrinho(carrinho);
-        return super.incluir(carrinho);
-    }
 }

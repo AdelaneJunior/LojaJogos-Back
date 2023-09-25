@@ -75,19 +75,4 @@ public class Jogo extends BaseEntidade<Long> {
     @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY)
     private Set<JogoCarrinho> jogoCarrinhos;
 
-
-    @Override
-    public String getTabelaNome() {
-        return NOME_TABELA;
-    }
-
-    @Override
-    public Long getId() {
-        return codigo;
-    }
-
-    @Override
-    public void setId(Long id) {
-        this.codigo = id;
-    }
 }

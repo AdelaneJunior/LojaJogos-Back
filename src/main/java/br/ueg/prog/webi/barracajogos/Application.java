@@ -6,6 +6,7 @@ import br.ueg.prog.webi.barracajogos.repository.AvaliacaoRepository;
 import br.ueg.prog.webi.barracajogos.repository.ImagemRepository;
 import br.ueg.prog.webi.barracajogos.repository.JogoRepository;
 import br.ueg.prog.webi.barracajogos.repository.UsuarioRepository;
+import br.ueg.prog.webi.barracajogos.service.JogoCarrinhoService;
 import br.ueg.prog.webi.barracajogos.service.impl.CarrinhoServiceImpl;
 import io.swagger.v3.oas.models.Operation;
 import org.springdoc.core.customizers.OperationCustomizer;
@@ -44,7 +45,7 @@ public class Application {
 
     @Bean
     public CommandLineRunner
-    commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository, UsuarioRepository usuarioRepository, ImagemRepository imagemRepository, CarrinhoServiceImpl carrinhoService) {
+    commandLineRunner(JogoRepository jogoRepository, AvaliacaoRepository avaliacaoRepository, UsuarioRepository usuarioRepository, ImagemRepository imagemRepository, CarrinhoServiceImpl carrinhoService, JogoCarrinhoService jogoCarrinhoService) {
         return args -> {
             System.out.println("Executado");
             System.out.println(jogoRepository);
@@ -117,7 +118,6 @@ public class Application {
             user.setEmail("admin@gmail.com");
             user.setCodigo(null);
             user.setCarrinho(new Carrinho());
-            user.getCarrinho().setPrecoFinal(0D);
 
            user = usuarioRepository.save(user);
 
@@ -131,20 +131,24 @@ public class Application {
 
             System.out.println("Avaliacao: " + avaliacao);
 
-            Carrinho carrinho = carrinhoService.obterPeloId(1L);
+            System.out.println(carrinhoService.listarTodos());
+
+            Carrinho carrinho = carrinhoService.obterPeloId(user.getCarrinho().getCodigo());
 
             JogoCarrinho jogoCarrinho = new JogoCarrinho();
-            jogoCarrinho.setJogo(new Jogo());
-            jogoCarrinho.getJogo().setCodigo(1L);
-            jogoCarrinho.setDesconto(0D);
+            jogoCarrinho.setJogo(j1);
+            jogoCarrinho.setDesconto(BigDecimal.valueOf(10));
             jogoCarrinho.setQuantidade(1L);
-
+//            jogoCarrinho.setCarrinho(carrinho);
+//
+//            jogoCarrinho = jogoCarrinhoService.incluir(jogoCarrinho);
+//
+//            System.out.println(jogoCarrinho);
 
             carrinho.getJogos().add(jogoCarrinho);
 
-           carrinho = carrinhoService.incluir(carrinho);
+            carrinho = carrinhoService.incluir(carrinho);
 
-            System.out.println(carrinho);
         };
     }
 
