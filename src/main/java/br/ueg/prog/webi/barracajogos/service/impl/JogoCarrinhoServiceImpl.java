@@ -8,6 +8,7 @@ import br.ueg.prog.webi.barracajogos.service.JogoCarrinhoService;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 
