@@ -34,10 +34,10 @@ public class JogoCarrinhoServiceImpl
     public BigDecimal tratarPrecoJogoPorQuantidadeEDesconto(JogoCarrinho jogoCarrinho){
 
         BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
-        BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100)));
+        BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN));
         BigDecimal valorComDesconto = valorJogo.subtract(desconto);
 
-        return  valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade()));
+        return  valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade())).setScale(2,RoundingMode.HALF_EVEN);
 
     }
 
