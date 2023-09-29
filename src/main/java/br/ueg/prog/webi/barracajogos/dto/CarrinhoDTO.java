@@ -18,5 +18,5 @@ public class CarrinhoDTO {
 
     private BigDecimal precoFinal;
 
-    private List<JogoCarrinhoDTO> jogos;
+    private List<JogoCarrinhoDTO> jogoCarrinho;
 }

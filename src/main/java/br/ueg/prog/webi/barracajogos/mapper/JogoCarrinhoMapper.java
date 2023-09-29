@@ -6,7 +6,7 @@ import br.ueg.prog.webi.barracajogos.model.JogoCarrinho;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = JogoMapperImpl.class)
 public interface JogoCarrinhoMapper extends BaseMapper<JogoCarrinho, JogoCarrinhoDTO> {
 
     @Override
@@ -15,8 +15,9 @@ public interface JogoCarrinhoMapper extends BaseMapper<JogoCarrinho, JogoCarrinh
     JogoCarrinho toModelo(JogoCarrinhoDTO jogoCarrinhoDTO);
 
     @Override
-    @Mapping(source = "jogo.codigo", target = "jogoCodigo")
     @Mapping(source = "carrinho.codigo", target = "carrinhoCodigo")
+    @Mapping(source = "jogo.codigo", target = "jogoCodigo")
+    @Mapping(source = "jogo.nome", target = "jogoNome")
     JogoCarrinhoDTO toDTO(JogoCarrinho modelo);
 
 

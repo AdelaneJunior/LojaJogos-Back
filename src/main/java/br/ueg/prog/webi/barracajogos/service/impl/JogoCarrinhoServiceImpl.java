@@ -7,6 +7,9 @@ import br.ueg.prog.webi.barracajogos.repository.JogoCarrinhoRepository;
 import br.ueg.prog.webi.barracajogos.service.JogoCarrinhoService;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.util.List;
+
 
 @Service
 public class JogoCarrinhoServiceImpl
@@ -26,5 +29,35 @@ public class JogoCarrinhoServiceImpl
     @Override
     protected void validarCamposObrigatorios(JogoCarrinho entidade) {
 
+    }
+
+    public BigDecimal tratarPrecoJogoPorQuantidadeEDesconto(JogoCarrinho jogoCarrinho){
+
+        BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
+        BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100)));
+        BigDecimal valorComDesconto = valorJogo.subtract(desconto);
+
+        return  valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade()));
+
+    }
+
+    public void tratarPrecoJogoPorQuantidadeEDescontoList(List<JogoCarrinho> jogoCarrinhoList){
+
+        for(JogoCarrinho jogoCarrinho : jogoCarrinhoList) {
+
+            BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
+            BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100)));
+            BigDecimal valorComDesconto = valorJogo.subtract(desconto);
+
+            jogoCarrinho.setPrecoFinal(valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade())));
+
+        }
+    }
+
+    @Override
+    public List<JogoCarrinho> listarTodos() {
+        List<JogoCarrinho> jogoCarrinhoList = super.listarTodos();
+        tratarPrecoJogoPorQuantidadeEDescontoList(jogoCarrinhoList);
+        return jogoCarrinhoList;
     }
 }

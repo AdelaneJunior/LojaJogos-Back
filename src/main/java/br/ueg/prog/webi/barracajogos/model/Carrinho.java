@@ -49,10 +49,10 @@ public class Carrinho extends BaseEntidade<Long> {
     @EqualsAndHashCode.Exclude
     @OneToMany(
             mappedBy = "carrinho",
-            fetch = FetchType.LAZY,
+            fetch = FetchType.EAGER,
             orphanRemoval = true,
             cascade = CascadeType.ALL)
-    private Set<JogoCarrinho> jogos = new HashSet<>();
+    private Set<JogoCarrinho> jogoCarrinho = new HashSet<>();
 
     @Transient
     private BigDecimal precoFinal;

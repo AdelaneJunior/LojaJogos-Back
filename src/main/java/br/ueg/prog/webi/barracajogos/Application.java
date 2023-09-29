@@ -1,6 +1,5 @@
 package br.ueg.prog.webi.barracajogos;
 
-import br.ueg.prog.webi.api.controller.CrudController;
 import br.ueg.prog.webi.barracajogos.controller.CarrinhoController;
 import br.ueg.prog.webi.barracajogos.dto.CarrinhoDTO;
 import br.ueg.prog.webi.barracajogos.model.*;
@@ -10,21 +9,17 @@ import br.ueg.prog.webi.barracajogos.repository.JogoRepository;
 import br.ueg.prog.webi.barracajogos.repository.UsuarioRepository;
 import br.ueg.prog.webi.barracajogos.service.JogoCarrinhoService;
 import br.ueg.prog.webi.barracajogos.service.impl.CarrinhoServiceImpl;
-import io.swagger.v3.oas.models.Operation;
-import org.springdoc.core.customizers.OperationCustomizer;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.jpa.convert.threeten.Jsr310JpaConverters;
-import org.springframework.web.method.HandlerMethod;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.Month;
 import java.util.List;
-import java.util.Objects;
 
 
 @SpringBootApplication(
@@ -143,47 +138,23 @@ public class Application {
             JogoCarrinho jogoCarrinho = new JogoCarrinho();
             jogoCarrinho.setJogo(j1);
             jogoCarrinho.setDesconto(BigDecimal.valueOf(10));
-            jogoCarrinho.setQuantidade(1L);
-            jogoCarrinho.setCarrinho(carrinho);
+            jogoCarrinho.setQuantidade(3L);
 
-            jogoCarrinho = jogoCarrinhoService.incluir(jogoCarrinho);
-
-            System.out.println(jogoCarrinho);
+            carrinho.getJogoCarrinho().add(jogoCarrinho);
 
             jogoCarrinho = new JogoCarrinho();
-            jogoCarrinho.setJogo(jogoRepository.findById(1L).get());
-            jogoCarrinho.setDesconto(BigDecimal.valueOf(50));
+            jogoCarrinho.setJogo(new Jogo());
+            jogoCarrinho.getJogo().setCodigo(1L);
+            jogoCarrinho.setDesconto(BigDecimal.valueOf(5));
             jogoCarrinho.setQuantidade(1L);
-            jogoCarrinho.setCarrinho(carrinho);
 
-            jogoCarrinho = jogoCarrinhoService.incluir(jogoCarrinho);
+            carrinho.getJogoCarrinho().add(jogoCarrinho);
 
-            System.out.println(jogoCarrinho);
-
-//            carrinho.getJogos().add(jogoCarrinho);
-//
-//            carrinho = carrinhoService.incluir(carrinho);
+            carrinho = carrinhoService.alterar(carrinho , carrinho.getCodigo());
 
             CarrinhoDTO carrinhoDTO = carrinhoController.ObterPorId(user.getCarrinho().getCodigo()).getBody();
             System.out.println(carrinhoDTO);
         };
-    }
-
-    @Bean
-    public OperationCustomizer operationIdCustomizer() {
-        OperationCustomizer c = new OperationCustomizer() {
-
-            @Override
-            public Operation customize(Operation operation, HandlerMethod handlerMethod) {
-                Class<?> superClazz = handlerMethod.getBeanType().getSuperclass();
-                if (Objects.nonNull(superClazz) && superClazz.isAssignableFrom(CrudController.class)) {
-                    String beanName = handlerMethod.getBeanType().getSimpleName();
-                    operation.setOperationId(String.format("%s_%s", beanName, handlerMethod.getMethod().getName()));
-                }
-                return operation;
-            }
-        };
-        return c;
     }
 
     private static void imprimirLista(JogoRepository jogoRepository) {

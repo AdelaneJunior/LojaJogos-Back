@@ -5,6 +5,7 @@ import br.ueg.prog.webi.barracajogos.model.Carrinho;
 import br.ueg.prog.webi.barracajogos.model.JogoCarrinho;
 import br.ueg.prog.webi.barracajogos.repository.CarrinhoRepository;
 import br.ueg.prog.webi.barracajogos.service.CarrinhoService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -13,11 +14,14 @@ import java.util.Objects;
 
 @Service
 public class CarrinhoServiceImpl
-        extends BaseCrudService <Carrinho, Long, CarrinhoRepository>
-    implements CarrinhoService {
+        extends BaseCrudService<Carrinho, Long, CarrinhoRepository>
+        implements CarrinhoService {
+
+    @Autowired
+    private JogoCarrinhoServiceImpl jogoCarrinhoService;
+
     @Override
     protected void prepararParaIncluir(Carrinho entidade) {
-        tratarJogoCarrinho(entidade);
     }
 
     @Override
@@ -25,34 +29,21 @@ public class CarrinhoServiceImpl
 
     }
 
-    private void tratarJogoCarrinho(Carrinho carrinho){
-
-        if (Objects.nonNull(carrinho.getJogos())) {
-            carrinho.getJogos().forEach(jogoCarrinho -> {
-
-                if (Objects.isNull(jogoCarrinho.getCarrinho())) {
-                    jogoCarrinho.setCarrinho(new Carrinho());
-                    jogoCarrinho.getCarrinho().setCodigo(carrinho.getCodigo());
-                }
-            });
-        }
-    }
-
     private BigDecimal tratarPrecoFinal(Carrinho carrinho) {
 
         BigDecimal precoFinal = BigDecimal.ZERO;
 
-        for (JogoCarrinho jogoCarrinho : carrinho.getJogos()) {
-            BigDecimal quantidade = BigDecimal.valueOf(jogoCarrinho.getQuantidade());
-            BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
-            BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100)));
-            BigDecimal valorComDesconto = valorJogo.subtract(desconto);
-
-            BigDecimal jogoCarrinhoValor = valorComDesconto.multiply(quantidade);
-            precoFinal = precoFinal.add(jogoCarrinhoValor);
+        for (JogoCarrinho jogoCarrinho : carrinho.getJogoCarrinho()) {
+            jogoCarrinho.setPrecoFinal(jogoCarrinhoService.tratarPrecoJogoPorQuantidadeEDesconto(jogoCarrinho));
+            precoFinal = precoFinal.add(jogoCarrinho.getPrecoFinal());
         }
 
         return precoFinal;
+    }
+
+    @Override
+    protected void validarCamposObrigatorios(Carrinho entidade) {
+
     }
 
     @Override
@@ -60,8 +51,8 @@ public class CarrinhoServiceImpl
 
         Carrinho retorno = (Carrinho) this.repository.findById(id).get();
 
-        if(Objects.isNull(retorno.getJogos())) {
-            retorno.setJogos(new HashSet<>());
+        if (Objects.isNull(retorno.getJogoCarrinho())) {
+            retorno.setJogoCarrinho(new HashSet<>());
         }
 
         retorno.setPrecoFinal(tratarPrecoFinal(retorno));
@@ -70,8 +61,16 @@ public class CarrinhoServiceImpl
     }
 
     @Override
-    protected void validarCamposObrigatorios(Carrinho entidade) {
-
+    public Carrinho alterar(Carrinho carrinho, Long id) {
+        Carrinho carrinhoRetorno = super.alterar(carrinho, id);
+        carrinhoRetorno.setPrecoFinal(tratarPrecoFinal(carrinhoRetorno));
+        return carrinhoRetorno;
     }
 
+    @Override
+    public Carrinho incluir(Carrinho modelo) {
+        Carrinho carrinhoRetorno = super.incluir(modelo);
+        carrinhoRetorno.setPrecoFinal(tratarPrecoFinal(carrinhoRetorno));
+        return carrinhoRetorno;
+    }
 }

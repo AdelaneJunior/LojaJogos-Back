@@ -50,4 +50,7 @@ public class JogoCarrinho extends BaseEntidade<PkJogoCarrinho> {
 
     @Column(name = Coluna.DESCONTO, nullable = false)
     private BigDecimal desconto;
+
+    @Transient
+    private BigDecimal precoFinal;
 }

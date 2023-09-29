@@ -12,7 +12,7 @@ import java.util.Optional;
 public interface CarrinhoRepository extends JpaRepository<Carrinho,Long> {
 
     @Query("select carrinho from Carrinho carrinho " +
-            "left join fetch carrinho.jogos where" +
+            "left join fetch carrinho.jogoCarrinho where" +
             " carrinho.codigo = :codigo")
     Optional<Carrinho> findById(@Param("codigo") Long codigo);
 
