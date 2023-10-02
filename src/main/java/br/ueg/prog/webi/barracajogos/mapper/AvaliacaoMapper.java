@@ -19,5 +19,6 @@ public interface AvaliacaoMapper extends BaseMapper<Avaliacao, AvaliacaoDTO> {
     @Mapping(source = "jogo.nome", target = "nomeJogo")
     @Mapping(source = "usuario.codigo", target = "usuaseq")
     @Mapping(source = "usuario.nome", target = "nomeUsuario")
+    @Mapping(source = "mediaJogo", target = "mediaGeral")
     AvaliacaoDTO toDTO(Avaliacao modelo);
 }

@@ -14,8 +14,8 @@ import java.util.List;
 
 @Service
 public class JogoCarrinhoServiceImpl
-        extends BaseCrudService <JogoCarrinho, PkJogoCarrinho, JogoCarrinhoRepository>
-    implements JogoCarrinhoService {
+        extends BaseCrudService<JogoCarrinho, PkJogoCarrinho, JogoCarrinhoRepository>
+        implements JogoCarrinhoService {
 
     @Override
     protected void prepararParaIncluir(JogoCarrinho entidade) {
@@ -32,33 +32,54 @@ public class JogoCarrinhoServiceImpl
 
     }
 
-    public BigDecimal tratarPrecoJogoPorQuantidadeEDesconto(JogoCarrinho jogoCarrinho){
+    public void tratarPrecoJogoPorQuantidadeEDesconto(JogoCarrinho jogoCarrinho) {
 
         BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
         BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN));
         BigDecimal valorComDesconto = valorJogo.subtract(desconto);
 
-        return  valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade())).setScale(2,RoundingMode.HALF_EVEN);
+        jogoCarrinho.setPrecoFinal(valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade())).setScale(2, RoundingMode.HALF_EVEN));
 
     }
 
-    public void tratarPrecoJogoPorQuantidadeEDescontoList(List<JogoCarrinho> jogoCarrinhoList){
+    public void tratarPrecoJogoPorQuantidadeEDescontoList(List<JogoCarrinho> jogoCarrinhoList) {
 
-        for(JogoCarrinho jogoCarrinho : jogoCarrinhoList) {
+        for (JogoCarrinho jogoCarrinho : jogoCarrinhoList) {
 
             BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
             BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100)));
             BigDecimal valorComDesconto = valorJogo.subtract(desconto);
 
-            jogoCarrinho.setPrecoFinal(valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade())));
+            jogoCarrinho.setPrecoFinal(valorComDesconto.multiply(BigDecimal.valueOf(jogoCarrinho.getQuantidade())).setScale(2, RoundingMode.HALF_EVEN));
 
         }
+    }
+
+    public void tratarPrecoJogoComDesconto(JogoCarrinho jogoCarrinho) {
+
+        BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
+        BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN));
+        jogoCarrinho.setPrecoUnitario(desconto = valorJogo.subtract(desconto).setScale(2, RoundingMode.HALF_EVEN));
+
+
+    }
+
+    public void tratarPrecoJogoComDescontoList(List<JogoCarrinho> jogoCarrinhoList) {
+
+        for (JogoCarrinho jogoCarrinho : jogoCarrinhoList) {
+            BigDecimal valorJogo = jogoCarrinho.getJogo().getValor();
+            BigDecimal desconto = valorJogo.multiply(jogoCarrinho.getDesconto().divide(BigDecimal.valueOf(100), RoundingMode.HALF_EVEN));
+            jogoCarrinho.setPrecoUnitario(desconto = valorJogo.subtract(desconto).setScale(2, RoundingMode.HALF_EVEN));
+            jogoCarrinho.setTemDesconto(jogoCarrinho.getDesconto().floatValue() > 0 );
+        }
+
     }
 
     @Override
     public List<JogoCarrinho> listarTodos() {
         List<JogoCarrinho> jogoCarrinhoList = super.listarTodos();
         tratarPrecoJogoPorQuantidadeEDescontoList(jogoCarrinhoList);
+        tratarPrecoJogoComDescontoList(jogoCarrinhoList);
         return jogoCarrinhoList;
     }
 }

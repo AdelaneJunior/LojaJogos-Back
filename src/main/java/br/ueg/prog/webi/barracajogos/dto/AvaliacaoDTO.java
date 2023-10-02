@@ -21,7 +21,7 @@ public class AvaliacaoDTO {
 
     private String nomeJogo;
 
-    private Double media;
+    private Double mediaGeral;
 
     private String nomeUsuario;
 

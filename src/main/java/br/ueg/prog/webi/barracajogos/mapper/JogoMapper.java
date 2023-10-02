@@ -6,7 +6,7 @@ import br.ueg.prog.webi.barracajogos.model.Jogo;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = ImagemMapperImpl.class)
 public interface JogoMapper extends BaseMapper<Jogo, JogoDTO> {
 
     @Override

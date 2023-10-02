@@ -29,7 +29,6 @@ public class JogoCarrinho extends BaseEntidade<PkJogoCarrinho> {
 
 
     @Id
-    @EqualsAndHashCode.Exclude
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = Coluna.JOGO, nullable = false,
             referencedColumnName = Jogo.COLUNA.ID,
@@ -53,4 +52,10 @@ public class JogoCarrinho extends BaseEntidade<PkJogoCarrinho> {
 
     @Transient
     private BigDecimal precoFinal;
+
+    @Transient
+    private BigDecimal precoUnitario;
+
+    @Transient
+    private Boolean temDesconto;
 }

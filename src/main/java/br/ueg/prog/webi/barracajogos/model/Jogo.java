@@ -9,6 +9,7 @@ import lombok.ToString;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Set;
 
 import static jakarta.persistence.GenerationType.SEQUENCE;
@@ -73,6 +74,6 @@ public class Jogo extends BaseEntidade<Long> {
     @ToString.Exclude
     @EqualsAndHashCode.Exclude
     @OneToMany(mappedBy = "jogo", fetch = FetchType.LAZY)
-    private Set<JogoCarrinho> jogoCarrinhos;
+    private Set<JogoCarrinho> jogoCarrinhos = new HashSet<>();
 
 }

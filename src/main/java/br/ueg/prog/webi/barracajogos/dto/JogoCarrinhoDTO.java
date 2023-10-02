@@ -17,11 +17,17 @@ public class JogoCarrinhoDTO {
 
     private Long carrinhoCodigo;
 
-    private String jogoNome;
-
     private Long quantidade;
 
     private BigDecimal desconto;
 
     private BigDecimal precoFinal;
+
+    private BigDecimal precoUnitario;
+
+    private String jogoNome;
+
+    private String caminhoImagemJogo;
+
+    private Boolean temDesconto;
 }

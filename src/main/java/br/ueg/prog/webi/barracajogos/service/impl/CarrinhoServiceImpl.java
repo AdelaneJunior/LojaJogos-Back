@@ -34,11 +34,16 @@ public class CarrinhoServiceImpl
         BigDecimal precoFinal = BigDecimal.ZERO;
 
         for (JogoCarrinho jogoCarrinho : carrinho.getJogoCarrinho()) {
-            jogoCarrinho.setPrecoFinal(jogoCarrinhoService.tratarPrecoJogoPorQuantidadeEDesconto(jogoCarrinho));
+            jogoCarrinhoService.tratarPrecoJogoPorQuantidadeEDesconto(jogoCarrinho);
             precoFinal = precoFinal.add(jogoCarrinho.getPrecoFinal());
         }
 
         return precoFinal;
+    }
+
+    private void tratarPrecoUnitarioDosJogosCarrinho(Carrinho carrinho){
+
+        jogoCarrinhoService.tratarPrecoJogoComDescontoList(carrinho.getJogoCarrinho().stream().toList());
     }
 
     @Override
@@ -56,6 +61,7 @@ public class CarrinhoServiceImpl
         }
 
         retorno.setPrecoFinal(tratarPrecoFinal(retorno));
+        tratarPrecoUnitarioDosJogosCarrinho(retorno);
 
         return retorno;
     }

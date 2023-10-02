@@ -18,6 +18,7 @@ public interface JogoCarrinhoMapper extends BaseMapper<JogoCarrinho, JogoCarrinh
     @Mapping(source = "carrinho.codigo", target = "carrinhoCodigo")
     @Mapping(source = "jogo.codigo", target = "jogoCodigo")
     @Mapping(source = "jogo.nome", target = "jogoNome")
+    @Mapping(source = "jogo.imagem.pathReference", target = "caminhoImagemJogo")
     JogoCarrinhoDTO toDTO(JogoCarrinho modelo);
 
 
