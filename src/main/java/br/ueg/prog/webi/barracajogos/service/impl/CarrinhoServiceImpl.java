@@ -70,6 +70,7 @@ public class CarrinhoServiceImpl
     public Carrinho alterar(Carrinho carrinho, Long id) {
         Carrinho carrinhoRetorno = super.alterar(carrinho, id);
         carrinhoRetorno.setPrecoFinal(tratarPrecoFinal(carrinhoRetorno));
+        tratarPrecoUnitarioDosJogosCarrinho(carrinhoRetorno);
         return carrinhoRetorno;
     }
 
