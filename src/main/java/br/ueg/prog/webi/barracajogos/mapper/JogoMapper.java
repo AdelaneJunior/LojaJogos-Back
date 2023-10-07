@@ -16,5 +16,6 @@ public interface JogoMapper extends BaseMapper<Jogo, JogoDTO> {
     @Override
     @Mapping(source = "imagem.codigo", target = "codigoImagem")
     @Mapping(source = "imagem.pathReference", target = "caminhoImagem")
+    @Mapping(source = "imagem.nome", target = "nomeImagem")
     JogoDTO toDTO(Jogo jogo);
 }

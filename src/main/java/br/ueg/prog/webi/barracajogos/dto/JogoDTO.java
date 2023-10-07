@@ -23,6 +23,8 @@ public class JogoDTO {
 
     private String caminhoImagem;
 
+    private String nomeImagem;
+
     private String nome;
 
     private String desenvolvedora;

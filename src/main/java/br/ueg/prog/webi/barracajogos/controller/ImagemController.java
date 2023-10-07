@@ -1,6 +1,9 @@
 package br.ueg.prog.webi.barracajogos.controller;
 
 import br.ueg.prog.webi.api.exception.MessageResponse;
+import br.ueg.prog.webi.barracajogos.dto.ImagemDTO;
+import br.ueg.prog.webi.barracajogos.mapper.ImagemMapperImpl;
+import br.ueg.prog.webi.barracajogos.model.Imagem;
 import br.ueg.prog.webi.barracajogos.service.impl.ImagemServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -21,6 +24,8 @@ public class ImagemController {
 
     @Autowired
     private ImagemServiceImpl service;
+    @Autowired
+    private ImagemMapperImpl mapper;
 
     @Operation(
             description = "upload de imagem",
@@ -50,6 +55,43 @@ public class ImagemController {
     @GetMapping
     public String obterPeloID(Long requestID){
         return this.service.obterPeloId(requestID).getPathReference();
+    }
+
+
+    @DeleteMapping(
+            path = {"/{id}"}
+    )
+    @Operation(
+            description = "Método utilizado para remover uma entidiade pela id informado",
+            responses = {@ApiResponse(
+                    responseCode = "200",
+                    description = "Entidade Removida",
+                    content = {@Content(
+                            mediaType = "application/json"
+                    )}
+            ), @ApiResponse(
+                    responseCode = "404",
+                    description = "Registro não encontrado",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = MessageResponse.class
+                            )
+                    )}
+            ), @ApiResponse(
+                    responseCode = "403",
+                    description = "Acesso negado",
+                    content = {@Content(
+                            mediaType = "application/json",
+                            schema = @Schema(
+                                    implementation = MessageResponse.class
+                            )
+                    )}
+            )}
+    )
+    public ImagemDTO remover(@PathVariable(name = "id") Long idImagem){
+        Imagem imagem = this.service.excluir(idImagem);
+        return this.mapper.toDTO(imagem);
     }
 
 }

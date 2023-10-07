@@ -14,6 +14,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 
 @Service
 public class ImagemServiceImpl extends BaseCrudService<Imagem, Long, ImagemRepository> implements ImagemService {
@@ -41,8 +42,8 @@ public class ImagemServiceImpl extends BaseCrudService<Imagem, Long, ImagemRepos
 
     public Long incluir(MultipartFile imagemASalvar) throws IOException {
 
-        String caminhoArquivo = CAMINHO_PASTA + "\\" + imagemASalvar.getOriginalFilename();
-        String pathReference = PATH_REFERENCE + "/" + imagemASalvar.getOriginalFilename();
+        String caminhoArquivo = CAMINHO_PASTA + "\\" + LocalDate.now() + imagemASalvar.getOriginalFilename();
+        String pathReference = PATH_REFERENCE + "/" + LocalDate.now() + imagemASalvar.getOriginalFilename();
 
         try {
             Imagem imagem = this.repository.save(Imagem.builder()
@@ -58,5 +59,15 @@ public class ImagemServiceImpl extends BaseCrudService<Imagem, Long, ImagemRepos
         } catch (DataIntegrityViolationException | ConstraintViolationException var3) {
             throw new BusinessException(ApiMessageCode.ERRO_BD, new Object[]{var3.getMessage()});
         }
+    }
+
+    @Override
+    public Imagem excluir(Long id) {
+        Imagem imagemExcluir = super.excluir(id);
+        File file = new File(imagemExcluir.getCaminhoArq());
+        if(file.delete()){
+            return imagemExcluir;
+        }
+        return null;
     }
 }
