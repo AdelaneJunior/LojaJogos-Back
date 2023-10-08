@@ -1,6 +1,7 @@
 package br.ueg.prog.webi.barracajogos.service.impl;
 
 import br.ueg.prog.webi.api.service.BaseCrudService;
+import br.ueg.prog.webi.barracajogos.model.Carrinho;
 import br.ueg.prog.webi.barracajogos.model.Usuario;
 import br.ueg.prog.webi.barracajogos.repository.UsuarioRepository;
 import br.ueg.prog.webi.barracajogos.service.UsuarioService;
@@ -23,6 +24,7 @@ public class UsuarioServiceImpl extends BaseCrudService<Usuario, Long, UsuarioRe
         String senhaCodificada = bCryptPasswordEncoder.encode(usuario.getSenha());
         usuario.setSenha(senhaCodificada);
         usuario.setRole("ROLE_USER");
+        usuario.setCarrinho(new Carrinho());
 
     }
 
